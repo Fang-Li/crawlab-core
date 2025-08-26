@@ -2,6 +2,8 @@ package client
 
 import (
 	"encoding/json"
+	"time"
+
 	"github.com/apex/log"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/crawlab-team/crawlab-core/entity"
@@ -17,7 +19,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/dig"
-	"time"
 )
 
 type BaseServiceDelegate struct {
@@ -184,7 +185,7 @@ func (d *BaseServiceDelegate) Count(query bson.M) (total int, err error) {
 	ctx, cancel := d.c.Context()
 	defer cancel()
 	req := d.mustNewRequest(&entity.GrpcBaseServiceParams{Query: query})
-	res, err := d.getModelBaseServiceClient().Insert(ctx, req)
+	res, err := d.getModelBaseServiceClient().Count(ctx, req)
 	if err != nil {
 		return total, err
 	}
